@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ro.itschool.entity.Post;
+import ro.itschool.entity.Reply;
 import ro.itschool.entity.User;
 import ro.itschool.exceptions.UserNotFoundException;
 import ro.itschool.repository.PostRepository;
@@ -118,15 +119,19 @@ public class PostController {
     postService.unLikePost(id);
   }
 
-
-
-
   //5. Repost : “copy” an existing post from a different user
   //works
 //  @PostMapping(value = "/repost/{id}")
 //  public void repost(@PathVariable Long id) {
 //    postService.repost(id);
 //  }
+
+  /**REPLY*/
+
+  @PostMapping("/{postId}/replies")
+  public void addReplyToPost(@PathVariable(value = "postId") Long postId, @RequestBody Reply reply) {
+    postService.addReplyToPost(postId, reply);
+  }
 
 }
 

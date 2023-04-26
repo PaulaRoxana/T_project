@@ -2,6 +2,7 @@ package ro.itschool.service;
 
 import org.springframework.stereotype.Service;
 import ro.itschool.entity.Post;
+import ro.itschool.entity.Reply;
 import ro.itschool.entity.User;
 
 import java.time.LocalDateTime;
@@ -11,7 +12,6 @@ import java.util.Optional;
 @Service
 public interface PostService {
 
-  //  Post save(Post newPost);
   void save(Post post);
 
 //  List<Post> filterPosts(LocalDateTime timestamp);
@@ -31,4 +31,6 @@ public interface PostService {
   List<Post> getMyPosts();
   List<Post> getPostsFromFollowedUsers();
   List<User> getUsersWhoLikePost(Long id);
+
+  void addReplyToPost(Long postId, Reply reply);
 }

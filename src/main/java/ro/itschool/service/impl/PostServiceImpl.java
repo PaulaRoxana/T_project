@@ -6,8 +6,10 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import ro.itschool.entity.Post;
+import ro.itschool.entity.Reply;
 import ro.itschool.entity.User;
 import ro.itschool.repository.PostRepository;
+import ro.itschool.repository.ReplyRepository;
 import ro.itschool.repository.UserRepository;
 import ro.itschool.service.PostService;
 import ro.itschool.service.UserService;
@@ -16,6 +18,7 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +27,7 @@ public class PostServiceImpl implements PostService {
   private final UserRepository userRepository;
   private final PostRepository postRepository;
   private final UserService userService;
+  private final ReplyRepository replyRepository;
 
 //    public Post save(Post newPost) {
 //        newPost.setTimestamp(LocalDate.now());
@@ -170,6 +174,26 @@ public class PostServiceImpl implements PostService {
       .stream()
       .map(user -> new User(user.getUsername()))
       .toList();
+  }
+
+  @Override
+  public void addReplyToPost(Long postId, Reply reply) {
+    User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    Optional<User> optionalLoggedInUser = userRepository.findByUsername(loggedUser.getUsername());
+    User whoReplies = optionalLoggedInUser.get();
+
+    Optional<Post> optionalPost = postRepository.findById(postId);
+    Post postToBeReplied = optionalPost.get();
+
+    reply.setTimestamp(LocalDateTime.now());
+    reply.setUser(whoReplies);
+
+    Set<Reply> replies = postToBeReplied.getReplies();
+    replies.add(reply);
+    postToBeReplied.setReplies(replies);
+    //reply.setPost(post);
+    replyRepository.save(reply);
+
   }
 }
 

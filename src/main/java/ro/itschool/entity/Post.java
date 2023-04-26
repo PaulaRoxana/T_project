@@ -28,8 +28,6 @@ public class Post {
 
     private String message;
 
-//    @Temporal(TemporalType.DATE)
-//    private LocalDate timestamp;
 
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime timestamp;
@@ -45,8 +43,8 @@ public class Post {
 //    @OneToMany(mappedBy = "post", cascade = ALL)
 //    private Set<Reply> replies;
 
-//    @OneToMany
-//    private Set<Reply> replies = new LinkedHashSet<>();
+    @OneToMany
+    private Set<Reply> replies = new LinkedHashSet<>();
 
 //    @OneToMany(mappedBy = "post", cascade = ALL)
 //    private Set<Mention> mentions;
