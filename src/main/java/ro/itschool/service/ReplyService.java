@@ -5,5 +5,5 @@ import ro.itschool.entity.Reply;
 
 @Service
 public interface ReplyService {
-    Reply save(Reply newReply);
+    void addReplyToReply(Long replyId, Reply reply);
 }
