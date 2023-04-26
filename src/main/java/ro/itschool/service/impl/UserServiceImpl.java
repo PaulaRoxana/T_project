@@ -1,6 +1,7 @@
 package ro.itschool.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import ro.itschool.entity.User;
@@ -34,29 +35,6 @@ public class UserServiceImpl implements UserService {
   }
 
 
-//    @Override
-//    public Optional<User> findByName(User user) {
-//        return userRepository.findByName(user.getFirstName());
-//    }
-
-//    @Override
-//    public User followUser(Long followerId, Long followedId) {
-//        Optional<User> followerOptional = userRepository.findById(followerId);
-//        Optional<User> followedOptional = userRepository.findById(followedId);
-//        if (followerOptional.isEmpty() || followedOptional.isEmpty()) {
-//            throw new IllegalArgumentException("Invalid follower or following user ID");
-//        }
-//
-//        User follower = followerOptional.get();
-//        User followed = followedOptional.get();
-//
-//        follower.getFollowed().add(followed);
-//        followed.getFollowing().add(follower);
-//
-//        return userRepository.save(follower);
-//
-//    }
-
   @Override
   public void followUser(Long followedId) {
     User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -79,6 +57,16 @@ public void unfollowUser(Long followedId) {
     toBeFollowed.ifPresent(followedUser -> userRepository.deleteFromFollowedTable(loggedInUser.getId(), followedUser.getId()));
   });
 }
+
+  @Override
+  public List<User> getFollowedUsers() {
+    User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    Optional<User> optionalLoggedInUser = userRepository.findByUsername(loggedUser.getUsername());
+    return userRepository.getFollowedUsers(optionalLoggedInUser.get().getId())
+      .stream()
+      .map(elem -> new User(elem[0].toString(), elem[1].toString(), elem[2].toString(), elem[3].toString(), elem[4].toString()))
+      .toList();
+  }
 
   @Override
   public void deleteById(Long id) {

@@ -20,6 +20,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class PostServiceImpl implements PostService {
+
   private final UserRepository userRepository;
   private final PostRepository postRepository;
   private final UserService userService;
@@ -40,18 +41,10 @@ public class PostServiceImpl implements PostService {
     });
   }
 
-
-  @Override
-  public List<Post> getMyPosts() {
-    User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-    Optional<User> optionalLoggedInUser = userRepository.findById(principal.getId());
-    return postRepository.findByUserId(optionalLoggedInUser.get().getId());
-  }
-
-  @Override
-  public List<Post> filterPosts(LocalDateTime timestamp) {
-    return postRepository.findByTimestampGreaterThan(timestamp);
-  }
+//  @Override
+//  public List<Post> filterPosts(LocalDateTime timestamp) {
+//    return postRepository.findByTimestampGreaterThan(timestamp);
+//  }
 
   @Override
   public void deleteById(Long id) {
@@ -67,7 +60,7 @@ public class PostServiceImpl implements PostService {
           loggedInUser.getPosts().remove(p);
           p.setUser(null);
           postRepository.save(p);
-//         postRepository.deleteLikesByPostId(id);
+          postRepository.deleteLikesByPostId(id);
 //         postRepository.deleteReplies(id);
           // postRepository.deleteById(id);
           postRepository.delete(p);
@@ -82,6 +75,15 @@ public class PostServiceImpl implements PostService {
         throw new RuntimeException(e);
       }
     }
+  }
+
+  @Override
+  public List<Post> getMyPosts() {
+    User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    Optional<User> optionalLoggedInUser = userRepository.findById(principal.getId());
+    return postRepository.findByUserId(optionalLoggedInUser.get().getId())
+      .stream()
+      .toList();
   }
 
   @Override
@@ -145,6 +147,7 @@ public class PostServiceImpl implements PostService {
       postToLike.ifPresent(pToLike -> postRepository.insertIntoLikesTable(loggedInUser.getId(), pToLike.getId()));
     });
   }
+
   @Override
   public void unLikePost(Long postId) {
     User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -155,7 +158,19 @@ public class PostServiceImpl implements PostService {
     });
   }
 
+  @Override
+  public List<User> getUsersWhoLikePost(Long postId) {
+    User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    Optional<User> optionalLoggedInUser = userRepository.findByUsername(loggedUser.getUsername());
+    User loggedInUser = optionalLoggedInUser.get();
+    Optional<Post> optionalLikedPost = postRepository.findById(postId);
+    Post likedPost = optionalLikedPost.get();
 
+    return postRepository.getUsersWhoLikePost(likedPost.getId())
+      .stream()
+      .map(user -> new User(user.getUsername()))
+      .toList();
+  }
 }
 
 

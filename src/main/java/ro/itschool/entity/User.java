@@ -2,10 +2,7 @@ package ro.itschool.entity;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,6 +16,7 @@ import java.util.stream.Collectors;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,6 +24,8 @@ public class User implements UserDetails {
     private Long id;
 
     private String firstName;
+
+
 
     private String lastName;
 
@@ -74,7 +74,9 @@ public class User implements UserDetails {
     private Set<Post> likes = new LinkedHashSet<>();
 
 
-
+    public User(String username) {
+        this.username = username;
+    }
 
     public User(String id, String username, String lastName, String firstName, String email) {
         this.id = Long.valueOf(id);

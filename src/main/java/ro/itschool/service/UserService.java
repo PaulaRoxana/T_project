@@ -17,8 +17,7 @@ public interface UserService {
   //  User followUser(Long followerId, Long followedId);
   void followUser(Long followedId);
 
-
-  //List<User> getFollowedUsers();
+  List<User> getFollowedUsers();
 
   //     User unfollowUser(Long followerId, Long followedId);
   void unfollowUser(Long followedId);

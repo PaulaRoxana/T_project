@@ -42,8 +42,11 @@ public class Post {
     @ManyToMany(mappedBy = "likes", fetch = FetchType.EAGER)
     private Set<User> likes = new LinkedHashSet<>();
 
-    @OneToMany(mappedBy = "post", cascade = ALL)
-    private Set<Reply> replies;
+//    @OneToMany(mappedBy = "post", cascade = ALL)
+//    private Set<Reply> replies;
+
+//    @OneToMany
+//    private Set<Reply> replies = new LinkedHashSet<>();
 
 //    @OneToMany(mappedBy = "post", cascade = ALL)
 //    private Set<Mention> mentions;

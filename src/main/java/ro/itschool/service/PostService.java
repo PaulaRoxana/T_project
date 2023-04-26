@@ -2,6 +2,7 @@ package ro.itschool.service;
 
 import org.springframework.stereotype.Service;
 import ro.itschool.entity.Post;
+import ro.itschool.entity.User;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -13,9 +14,7 @@ public interface PostService {
   //  Post save(Post newPost);
   void save(Post post);
 
-  List<Post> getPostsFromFollowedUsers();
-
-  List<Post> filterPosts(LocalDateTime timestamp);
+//  List<Post> filterPosts(LocalDateTime timestamp);
 
   void deleteById(Long id);
 
@@ -30,4 +29,6 @@ public interface PostService {
   Optional<Post> findById(Long postId);
 
   List<Post> getMyPosts();
+  List<Post> getPostsFromFollowedUsers();
+  List<User> getUsersWhoLikePost(Long id);
 }

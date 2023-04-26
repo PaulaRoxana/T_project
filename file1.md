@@ -26,3 +26,8 @@ REPLY:
 1. Add post reply : reply to existing posts or other replies. Able to specify if the reply
    is public or only for the parent post’s owner
 2. Cascade: When a parent post is deleted, remove all its replies
+
+user.setPassword(passwordEncoder.encode(request.getPassword()));
+private final PasswordEncoder passwordEncoder;
+MyRole userRole = roleRepository.findByName(RoleName.ROLE_USER);
+user.setRoles(Set.of(userRole));

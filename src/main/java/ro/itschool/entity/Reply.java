@@ -18,9 +18,5 @@ public class Reply extends Post {
     @Column(name = "is_public")
     private Boolean isPublic;
 
-    @ManyToOne
-    @JoinColumn(name = "reply_id", nullable = false)
-    private Post post;
-
 
 }

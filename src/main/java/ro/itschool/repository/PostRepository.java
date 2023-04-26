@@ -7,14 +7,16 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import ro.itschool.entity.Post;
+import ro.itschool.entity.User;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
 
-  List<Post> findByTimestampGreaterThan(@Param("timestamp") LocalDateTime timestamp);
+//  List<Post> findByTimestampGreaterThan(@Param("timestamp") LocalDateTime timestamp);
 
   @Transactional
   @Modifying
@@ -43,7 +45,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     ON user.user_id = likes.user_id
     WHERE post_id = ?;
        """, nativeQuery = true)
-  List<Object[]> getUsersWhoLikePost(Long id);
+  List<User> getUsersWhoLikePost(Long id);
 
 
   @Transactional
@@ -51,4 +53,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
   @Query(value = "delete from likes where user_id = :userId AND post_id = :postId", nativeQuery = true)
   void deleteFromLikesTable(@Param("userId") Long userId, @Param("postId") Long postId);
 
+ List<Post> findByTimestampAfter(LocalDateTime from);
+
+//  List<Post> findByStartDateAfter(LocalDateTime timestamp1);
 }

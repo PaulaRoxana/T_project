@@ -30,7 +30,6 @@ public class UserController {
 
 
     //2. Search : search for other users by username, firstname or lastname
-    //merge
     @GetMapping(value = "/search")
     public List<User> searchUser(@RequestParam String keyword) {
         return userService.searchUser(keyword);
@@ -58,13 +57,14 @@ public class UserController {
             return ResponseEntity.badRequest().build();
     }
 
-//    @GetMapping(value = "/followed")
-//    public void getFollowedUsers() {
-//        userService.getFollowedUsers();
-//    }
+    //3-4.1
+    @GetMapping(value = "/followed")
+    public List<String> getFollowedUsers() {
+        return userService.getFollowedUsers().stream().map(User::getUsername).toList();
+    }
 
     //5. Unregister : remove user and all his posts
-    //functioneaza
+
     @DeleteMapping("/delete/{id}")
     public void deleteUser(@PathVariable Long id) {
         userService.deleteById(id);

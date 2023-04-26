@@ -1,6 +1,7 @@
 package ro.itschool.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +12,7 @@ import ro.itschool.repository.PostRepository;
 import ro.itschool.service.PostService;
 import ro.itschool.service.UserService;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -48,9 +50,9 @@ public class PostController {
    * !! 2'.Able to filter posts newer than a timestamp
    */
 //@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-  @GetMapping(value = "/filter-timestamp")
-  public List<Post> filterPosts(@RequestParam("timestamp") LocalDateTime timestamp1) {
-    return postService.filterPosts(timestamp1);
+  @GetMapping(value = "/all-posts_after")
+  public List<Post> getAllPostsAfter(@RequestParam("timestamp") LocalDateTime thisTime) {
+    return postRepository.findByTimestampAfter(thisTime);
   }
 
   /**
@@ -93,15 +95,31 @@ public class PostController {
   }
 
   /**
-   * L1. Like post : mark an existing post with a like. The owner of the post will receive in his
+   * LIKE
+   * 1. Like post : mark an existing post with a like. The owner of the post will receive in his
    * “get own posts” call (Posts.2) ok each post, a list of all the likes that message
    * received
+   * 2. Remove like
+   * 3. Cascade: When a post is deleted, remove all its like
    */
 
   @PostMapping(value = "/like/{id}")
   public void likePost(@PathVariable Long id) {
     postService.likePost(id);
   }
+
+  @GetMapping(value = "/all-likes-post/{id}")
+  public ResponseEntity getAllLikesForPost(@PathVariable Long id) {
+    return new ResponseEntity<>(postService.getUsersWhoLikePost(id).stream().map(User::getUsername).toList(), HttpStatus.OK);
+  }
+
+  @PostMapping(value = "/unlike/{id}")
+  public void unLikePost(@PathVariable Long id) {
+    postService.unLikePost(id);
+  }
+
+
+
 
   //5. Repost : “copy” an existing post from a different user
   //works
