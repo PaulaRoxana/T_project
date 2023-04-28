@@ -17,14 +17,17 @@ public class AuthenticationController {
 
     private final AuthenticationService service;
 
-    @PostMapping("/login")
-    public AuthenticationResponse authenticate(@RequestBody AuthenticationRequest authenticationRequest) {
-        return service.authenticate(authenticationRequest);
-    }
-
+    //1. Register : allow users to register with a unique username, a first name and a last name, an e-mail and a password
     @PostMapping("/register")
     public AuthenticationResponse register(@RequestBody RegisterRequest registerRequest) {
         return service.register(registerRequest);
+    }
+
+    //1.1
+    // Login
+    @PostMapping("/login")
+    public AuthenticationResponse authenticate(@RequestBody AuthenticationRequest authenticationRequest) {
+        return service.authenticate(authenticationRequest);
     }
 
 }

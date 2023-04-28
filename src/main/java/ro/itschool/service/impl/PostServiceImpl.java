@@ -90,6 +90,14 @@ public class PostServiceImpl implements PostService {
       .toList();
   }
 
+  public List<Post> getMyPostsAfter(LocalDateTime from) {
+    User principal = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    Optional<User> optionalLoggedInUser = userRepository.findById(principal.getId());
+    return postRepository.findByUserIdAndTimestampAfter(optionalLoggedInUser.get().getId(), from)
+      .stream()
+      .toList();
+  }
+
   @Override
   public List<Post> getPostsFromFollowedUsers() {
     User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

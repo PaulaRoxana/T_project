@@ -18,14 +18,13 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @ToString
 public class User implements UserDetails {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long id;
 
     private String firstName;
-
-
 
     private String lastName;
 
@@ -40,7 +39,6 @@ public class User implements UserDetails {
 
     @Transient
     private String passwordConfirm;
-
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JsonManagedReference
@@ -85,7 +83,6 @@ public class User implements UserDetails {
         this.firstName = firstName;
         this.email = email;
     }
-
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

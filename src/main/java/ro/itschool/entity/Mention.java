@@ -12,6 +12,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Mention {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

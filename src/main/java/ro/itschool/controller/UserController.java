@@ -19,9 +19,6 @@ public class UserController {
     private final UserService userService;
     private final UserRepository userRepository;
 
-    //1. Register : allow users to register with a unique username, a first name and a last name, an e-mail and a password
-
-
     //1.1 Get all users
     @GetMapping(value = "/all")
     public List<User> getAllUsers() {
@@ -64,7 +61,6 @@ public class UserController {
     }
 
     //5. Unregister : remove user and all his posts
-
     @DeleteMapping("/delete/{id}")
     public void deleteUser(@PathVariable Long id) {
         userService.deleteById(id);

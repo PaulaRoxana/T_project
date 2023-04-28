@@ -1,22 +1,18 @@
 package ro.itschool.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ro.itschool.entity.Post;
 import ro.itschool.entity.Reply;
 import ro.itschool.entity.User;
-import ro.itschool.exceptions.UserNotFoundException;
 import ro.itschool.repository.PostRepository;
 import ro.itschool.service.PostService;
 import ro.itschool.service.UserService;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping(value = "/post")
@@ -45,6 +41,11 @@ public class PostController {
   @GetMapping(value = "/my-posts")
   public List<Post> getMyPosts() {
     return postService.getMyPosts();
+  }
+
+  @GetMapping(value = "/my-posts_after")
+  public List<Post> getMyPostsAfter(@RequestParam("timestamp") LocalDateTime thisTime) {
+    return postService.getMyPostsAfter(thisTime);
   }
 
   /**

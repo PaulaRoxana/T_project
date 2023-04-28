@@ -18,16 +18,14 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class ReplyServiceImpl implements ReplyService {
   private final ReplyRepository replyRepository;
-  UserRepository userRepository;
-  PostServiceImpl postRepository;
+  private final UserRepository userRepository;
+ private final PostServiceImpl postRepository;
 
   @Override
   public void addReplyToReply(Long replyId, Reply reply) {
     User loggedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
     Optional<User> optionalLoggedInUser = userRepository.findByUsername(loggedUser.getUsername());
     User whoReplies = optionalLoggedInUser.get();
-
 
     Optional<Reply> optionalReply = replyRepository.findById(replyId);
     Reply replyToBeReplied = optionalReply.get();

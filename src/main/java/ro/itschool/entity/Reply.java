@@ -15,6 +15,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Reply extends Post {
+
     @Column(name = "is_public")
     private Boolean isPublic;
 

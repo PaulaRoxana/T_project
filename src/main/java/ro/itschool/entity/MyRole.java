@@ -10,6 +10,7 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 public class MyRole {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

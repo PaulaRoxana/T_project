@@ -55,5 +55,5 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
  List<Post> findByTimestampAfter(LocalDateTime from);
 
-//  List<Post> findByStartDateAfter(LocalDateTime timestamp1);
+  List<Post> findByUserIdAndTimestampAfter(Long userId, LocalDateTime from);
 }

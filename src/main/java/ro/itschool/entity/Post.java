@@ -20,38 +20,32 @@ import static jakarta.persistence.CascadeType.ALL;
 @NoArgsConstructor
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public class Post {
-    @Id
-    // can no longer use identity key generation, because of inheritance
-    @GeneratedValue(strategy = GenerationType.TABLE)
-    @Column(name = "post_id")
-    private Long id;
 
-    private String message;
+  @Id
+  // can no longer use identity key generation, because of inheritance
+  @GeneratedValue(strategy = GenerationType.TABLE)
+  @Column(name = "post_id")
+  private Long id;
+
+  private String message;
+
+  @Temporal(TemporalType.TIMESTAMP)
+  private LocalDateTime timestamp;
 
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime timestamp;
+  @ManyToOne
+  @JsonBackReference
+  private User user;
 
+  @ManyToMany(mappedBy = "likes", fetch = FetchType.EAGER)
+  private Set<User> likes = new LinkedHashSet<>();
 
-    @ManyToOne
-    @JsonBackReference
-    private User user;
+  @OneToMany
+  private Set<Reply> replies = new LinkedHashSet<>();
 
-    @ManyToMany(mappedBy = "likes", fetch = FetchType.EAGER)
-    private Set<User> likes = new LinkedHashSet<>();
-
-//    @OneToMany(mappedBy = "post", cascade = ALL)
-//    private Set<Reply> replies;
-
-    @OneToMany
-    private Set<Reply> replies = new LinkedHashSet<>();
-
-//    @OneToMany(mappedBy = "post", cascade = ALL)
-//    private Set<Mention> mentions;
-
-    public Post(String message, LocalDateTime timestamp, User user) {
-        this.message = message;
-        this.timestamp = timestamp;
-        this.user = user;
-    }
+  public Post(String message, LocalDateTime timestamp, User user) {
+    this.message = message;
+    this.timestamp = timestamp;
+    this.user = user;
+  }
 }

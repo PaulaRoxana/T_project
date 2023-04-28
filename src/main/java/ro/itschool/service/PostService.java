@@ -29,6 +29,8 @@ public interface PostService {
   Optional<Post> findById(Long postId);
 
   List<Post> getMyPosts();
+
+  List<Post> getMyPostsAfter(LocalDateTime from);
   List<Post> getPostsFromFollowedUsers();
   List<User> getUsersWhoLikePost(Long id);
 
